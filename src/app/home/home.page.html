@@ -1,0 +1,98 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Data Mahasiswa</ion-title>
+
+    <!-- Tombol Tambah di Header -->
+    <ion-buttons slot="end">
+      <ion-button routerLink="/tambah-mhs">
+        Tambah Mahasiswa
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- 🔍 SEARCH BAR -->
+  <ion-searchbar
+    placeholder="Cari nama atau prodi..."
+    debounce="300"
+    (ionInput)="cariMahasiswa($event)">
+  </ion-searchbar>
+
+  <!-- 🔃 SORTING (FIXED) -->
+  <ion-segment
+    [value]="modeSort"
+(ionChange)="urutkanData($event)"
+    class="ion-padding-horizontal">
+
+    <ion-segment-button value="terbaru">
+      <ion-label>Terbaru</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="az">
+      <ion-label>A–Z</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="za">
+      <ion-label>Z–A</ion-label>
+    </ion-segment-button>
+
+  </ion-segment>
+
+  <!-- LIST DATA -->
+  <ion-list>
+
+    <ion-item
+      *ngFor="let mhs of dataMahasiswa"
+      lines="full">
+
+      <!-- Klik ke Detail -->
+      <ion-label [routerLink]="['/detail', mhs.id]">
+        <h2>{{ mhs.nama }}</h2>
+        <p>Jurusan: {{ mhs.jurusan }}</p>
+      </ion-label>
+
+      <!-- ✏️ EDIT -->
+      <ion-button
+        fill="clear"
+        color="primary"
+        slot="end"
+        (click)="editCepat(mhs)">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+
+      <!-- 🗑️ HAPUS -->
+      <ion-button
+        fill="clear"
+        color="danger"
+        slot="end"
+        (click)="konfirmasiHapus(mhs.id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+
+    </ion-item>
+
+  </ion-list>
+
+  <!-- EMPTY STATE -->
+  <ion-text
+    color="medium"
+    *ngIf="dataMahasiswa.length === 0"
+    class="ion-text-center ion-padding">
+    <p>Belum ada data mahasiswa</p>
+  </ion-text>
+
+  <!-- FAB TAMBAH -->
+  <ion-fab
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end">
+    <ion-fab-button
+      color="primary"
+      routerLink="/tambah-mhs">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
